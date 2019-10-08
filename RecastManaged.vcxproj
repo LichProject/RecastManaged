@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{EC2EAA01-84C9-4ABC-B364-BC2FB5C6BCBC}</ProjectGuid>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <Keyword>ManagedCProj</Keyword>
+    <RootNamespace>RecastManaged</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies />
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SupportJustMyCode>true</SupportJustMyCode>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies />
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies />
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies />
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="DetourTileCache\TileCache.h" />
+    <ClInclude Include="DetourTileCache\TileCacheParams.h" />
+    <ClInclude Include="Detour\DetourManaged.h" />
+    <ClInclude Include="Detour\DummyCompressor.h" />
+    <ClInclude Include="Detour\LinearAllocator.h" />
+    <ClInclude Include="Detour\LoadTileDelegate.h" />
+    <ClInclude Include="Detour\MeshHeader.h" />
+    <ClInclude Include="DetourTileCache\MeshProcess.h" />
+    <ClInclude Include="Detour\MeshTile.h" />
+    <ClInclude Include="Detour\NavMesh.h" />
+    <ClInclude Include="Detour\NavMeshCreateParams.h" />
+    <ClInclude Include="Detour\NavMeshData.h" />
+    <ClInclude Include="Detour\NavMeshParams.h" />
+    <ClInclude Include="Detour\NavMeshQuery.h" />
+    <ClInclude Include="Detour\OffMeshConnection.h" />
+    <ClInclude Include="Detour\Poly.h" />
+    <ClInclude Include="Detour\PolyDetail.h" />
+    <ClInclude Include="Detour\PolygonReference.h" />
+    <ClInclude Include="Detour\QueryFilter.h" />
+    <ClInclude Include="Detour\Status.h" />
+    <ClInclude Include="Detour\TileReference.h" />
+    <ClInclude Include="Recast\PolyMeshDetail.h" />
+    <ClInclude Include="Recast\PolyMesh.h" />
+    <ClInclude Include="Recast\HeightfieldLayerSet.h" />
+    <ClInclude Include="Recast\Heightfield.h" />
+    <ClInclude Include="Recast\ContourSet.h" />
+    <ClInclude Include="Recast\CompactSpan.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Recast\CompactCell.h" />
+    <ClInclude Include="Recast\CompactHeightfield.h" />
+    <ClInclude Include="Recast\RecastManaged.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="Recast\Span.h" />
+    <ClInclude Include="Tools\Math\Vector3.h" />
+    <ClInclude Include="Unmanaged\ChunkyTriMesh.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourAlloc.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourAssert.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourCommon.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourCrowd.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourLocalBoundary.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourMath.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourNavMesh.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourNavMeshBuilder.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourNavMeshQuery.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourNode.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourObstacleAvoidance.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourPathCorridor.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourPathQueue.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourProximityGrid.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourStatus.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourTileCache.h" />
+    <ClInclude Include="Unmanaged\Detour\DetourTileCacheBuilder.h" />
+    <ClInclude Include="Unmanaged\fastlz.h" />
+    <ClInclude Include="Unmanaged\InputGeom.h" />
+    <ClInclude Include="Unmanaged\MeshLoaderObj.h" />
+    <ClInclude Include="Unmanaged\Recast\Recast.h" />
+    <ClInclude Include="Unmanaged\Recast\RecastAlloc.h" />
+    <ClInclude Include="Unmanaged\Recast\RecastAssert.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="DetourTileCache\TileCache.cpp" />
+    <ClCompile Include="DetourTileCache\TileCacheParams.cpp" />
+    <ClCompile Include="Detour\DetourManaged.cpp" />
+    <ClCompile Include="Detour\DirectionFlags.h" />
+    <ClCompile Include="Detour\MeshHeader.cpp" />
+    <ClCompile Include="Detour\MeshTile.cpp" />
+    <ClCompile Include="Detour\NavMesh.cpp" />
+    <ClCompile Include="Detour\NavMeshCreateParams.cpp" />
+    <ClCompile Include="Detour\NavMeshData.cpp" />
+    <ClCompile Include="Detour\NavMeshParams.cpp" />
+    <ClCompile Include="Detour\NavMeshQuery.cpp" />
+    <ClCompile Include="Detour\OffMeshConnection.cpp" />
+    <ClCompile Include="Detour\Poly.cpp" />
+    <ClCompile Include="Detour\PolyDetail.cpp" />
+    <ClCompile Include="Detour\PolygonReference.cpp" />
+    <ClCompile Include="Detour\QueryFilter.cpp" />
+    <ClCompile Include="Detour\Status.cpp" />
+    <ClCompile Include="Detour\StatusDetailFlag.h" />
+    <ClCompile Include="Detour\StraightPathFlags.h" />
+    <ClCompile Include="Detour\TileFlags.h" />
+    <ClCompile Include="Detour\TileReference.cpp" />
+    <ClCompile Include="Recast\PolyMeshDetail.cpp" />
+    <ClCompile Include="Recast\PolyMesh.cpp" />
+    <ClCompile Include="Recast\HeightfieldLayerSet.cpp" />
+    <ClCompile Include="Recast\Heightfield.cpp" />
+    <ClCompile Include="Recast\ContourSet.cpp" />
+    <ClCompile Include="Recast\CompactSpan.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Recast\CompactCell.cpp" />
+    <ClCompile Include="Recast\CompactHeightfield.cpp" />
+    <ClCompile Include="Recast\DefaultAreaType.cpp" />
+    <ClCompile Include="Recast\RecastManaged.cpp" />
+    <ClCompile Include="Recast\Span.cpp" />
+    <ClCompile Include="Tools\Math\Vector3.cpp" />
+    <ClCompile Include="Unmanaged\ChunkyTriMesh.cpp" />
+    <ClCompile Include="Unmanaged\Detour\DetourAlloc.cpp" />
+    <ClCompile Include="Unmanaged\Detour\DetourAssert.cpp" />
+    <ClCompile Include="Unmanaged\Detour\DetourCommon.cpp" />
+    <ClCompile Include="Unmanaged\Detour\DetourCrowd.cpp" />
+    <ClCompile Include="Unmanaged\Detour\DetourLocalBoundary.cpp" />
+    <ClCompile Include="Unmanaged\Detour\DetourNavMesh.cpp" />
+    <ClCompile Include="Unmanaged\Detour\DetourNavMeshBuilder.cpp" />
+    <ClCompile Include="Unmanaged\Detour\DetourNavMeshQuery.cpp" />
+    <ClCompile Include="Unmanaged\Detour\DetourNode.cpp" />
+    <ClCompile Include="Unmanaged\Detour\DetourObstacleAvoidance.cpp" />
+    <ClCompile Include="Unmanaged\Detour\DetourPathCorridor.cpp" />
+    <ClCompile Include="Unmanaged\Detour\DetourPathQueue.cpp" />
+    <ClCompile Include="Unmanaged\Detour\DetourProximityGrid.cpp" />
+    <ClCompile Include="Unmanaged\Detour\DetourTileCache.cpp" />
+    <ClCompile Include="Unmanaged\Detour\DetourTileCacheBuilder.cpp" />
+    <ClCompile Include="Unmanaged\fastlz.c">
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
+    </ClCompile>
+    <ClCompile Include="Unmanaged\InputGeom.cpp" />
+    <ClCompile Include="Unmanaged\MeshLoaderObj.cpp" />
+    <ClCompile Include="Unmanaged\Recast\Recast.cpp" />
+    <ClCompile Include="Unmanaged\Recast\RecastAlloc.cpp" />
+    <ClCompile Include="Unmanaged\Recast\RecastArea.cpp" />
+    <ClCompile Include="Unmanaged\Recast\RecastAssert.cpp" />
+    <ClCompile Include="Unmanaged\Recast\RecastContour.cpp" />
+    <ClCompile Include="Unmanaged\Recast\RecastFilter.cpp" />
+    <ClCompile Include="Unmanaged\Recast\RecastLayers.cpp" />
+    <ClCompile Include="Unmanaged\Recast\RecastMesh.cpp" />
+    <ClCompile Include="Unmanaged\Recast\RecastMeshDetail.cpp" />
+    <ClCompile Include="Unmanaged\Recast\RecastRasterization.cpp" />
+    <ClCompile Include="Unmanaged\Recast\RecastRegion.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="app.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="app.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
