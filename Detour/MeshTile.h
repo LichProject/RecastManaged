@@ -226,9 +226,9 @@ namespace RecastManaged
 
 			array<unsigned char>^ GetAllDetailIndices();
 
-			array<float>^ GetAllVertices();
+			array<Tools::Math::Vector3^>^ GetAllVertices();
 
-			array<float>^ GetAllDetailVertices();
+			array<Tools::Math::Vector3^>^ GetAllDetailVertices();
 		};
 	}
 }

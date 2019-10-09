@@ -32,7 +32,7 @@ RecastManaged::Detour::OffMeshConnection^ RecastManaged::Detour::MeshTile::GetOf
 		{
 			return nullptr;
 		}
-		
+
 		auto const cons = this->_mt->offMeshCons;
 		return gcnew OffMeshConnection(&cons[index], false);
 	}
@@ -62,7 +62,7 @@ RecastManaged::Detour::Poly^ RecastManaged::Detour::MeshTile::GetPoly(int index)
 		{
 			return nullptr;
 		}
-		
+
 		auto const polys = this->_mt->polys;
 		return gcnew Poly(&polys[index], false);
 	}
@@ -73,7 +73,7 @@ RecastManaged::Detour::Poly^ RecastManaged::Detour::MeshTile::GetPoly(int index)
 array<RecastManaged::Detour::Poly^>^ RecastManaged::Detour::MeshTile::GetAllPolys()
 {
 	dtMeshTile* mt = this->_mt;
-	
+
 	auto const length = mt->header->polyCount;
 	auto const polys = gcnew array<Poly^>(length);
 
@@ -94,7 +94,7 @@ RecastManaged::Detour::PolyDetail^ RecastManaged::Detour::MeshTile::GetPolyDetai
 		{
 			return nullptr;
 		}
-		
+
 		auto const polyDetails = this->_mt->detailMeshes;
 		return gcnew PolyDetail(&polyDetails[index], false);
 	}
@@ -128,30 +128,29 @@ array<unsigned char>^ RecastManaged::Detour::MeshTile::GetAllDetailIndices()
 	return detailIndices;
 }
 
-array<float>^ RecastManaged::Detour::MeshTile::GetAllVertices()
+array<RecastManaged::Tools::Math::Vector3^>^ RecastManaged::Detour::MeshTile::GetAllVertices()
 {
 	auto const vertsRaw = this->Verts;
 	auto const length = _mt->header->vertCount;
-	auto const verts = gcnew array<float>(length);
+	auto const verts = gcnew array<Tools::Math::Vector3^>(length);
 
 	for (int i = 0; i < length; ++i)
 	{
-		verts[i] = vertsRaw[i];
+		verts[i] = gcnew Tools::Math::Vector3(vertsRaw[i], vertsRaw[i + 1], vertsRaw[i + 2]);
 	}
 
 	return verts;
 }
 
-array<float>^ RecastManaged::Detour::MeshTile::GetAllDetailVertices()
+array<RecastManaged::Tools::Math::Vector3^>^ RecastManaged::Detour::MeshTile::GetAllDetailVertices()
 {
 	auto const detailVertsRaw = this->DetailVerts;
-
 	auto const size = _mt->header->detailVertCount;
-	auto const detailVerts = gcnew array<float>(size);
+	auto const detailVerts = gcnew array<Tools::Math::Vector3^>(size);
 
 	for (int i = 0; i < size; i++)
 	{
-		detailVerts[i] = detailVertsRaw[i];
+		detailVerts[i] = gcnew Tools::Math::Vector3(detailVertsRaw[i], detailVertsRaw[i + 1], detailVertsRaw[i + 2]);
 	}
 
 	return detailVerts;

@@ -115,7 +115,7 @@ RecastManaged::Detour::Status^ RecastManaged::Detour::NavMeshQuery::QueryPolygon
 
 RecastManaged::Detour::Status^ RecastManaged::Detour::NavMeshQuery::FindStraightPath(Tools::Math::Vector3^ startPos,
                                                                                      Tools::Math::Vector3^ endPos,
-                                                                                     array<PolygonReference^>^ polyPath,
+                                                                                     array<PolygonReference^>^ path,
                                                                                      int maxStraightPathSize,
                                                                                      array<Tools::Math::Vector3^>^%
                                                                                      points,
@@ -124,7 +124,43 @@ RecastManaged::Detour::Status^ RecastManaged::Detour::NavMeshQuery::FindStraight
                                                                                      array<PolygonReference^>^%
                                                                                      straightPathRef)
 {
-	return gcnew Status(0);
+	const pin_ptr<float> pStartPos = &startPos->X;
+	const pin_ptr<float> pEndPos = &endPos->X;
+
+	const int pathLength = path->Length;
+
+	dtPolyRef* uPath = new dtPolyRef[pathLength];
+	for (int i = 0; i < pathLength; ++i)
+	{
+		uPath[i] = path[i]->Id;
+	}
+
+	const auto sPath = new float[maxStraightPathSize * 3];
+	const auto sPathFlags = new unsigned char[maxStraightPathSize];
+	const auto sPathRefs = new unsigned[maxStraightPathSize];
+
+	int sPathCount;
+
+	auto status = this->_query->findStraightPath(pStartPos, pEndPos, uPath, pathLength, sPath, sPathFlags, sPathRefs,
+	                                             &sPathCount, maxStraightPathSize, 0);
+
+	points = gcnew array<Tools::Math::Vector3^>(sPathCount);
+	straightPathFlags = gcnew array<StraightPathFlags>(sPathCount);
+	straightPathRef = gcnew array<PolygonReference^>(sPathCount);
+
+	for (int i = 0; i < sPathCount; ++i)
+	{
+		float* point = sPath + i * 3;
+		points[i] = gcnew Tools::Math::Vector3(*point, *(point + 1), *(point + 2));
+		straightPathFlags[i] = (StraightPathFlags)*(sPathFlags + i);
+		straightPathRef[i] = gcnew PolygonReference(*(sPathRefs + i));
+	}
+
+	delete[] sPath;
+	delete[] sPathFlags;
+	delete[] sPathRefs;
+
+	return gcnew Status(status);
 }
 
 RecastManaged::Detour::Status^ RecastManaged::Detour::NavMeshQuery::Raycast(PolygonReference^ startRef,
@@ -135,9 +171,11 @@ RecastManaged::Detour::Status^ RecastManaged::Detour::NavMeshQuery::Raycast(Poly
                                                                             float% t,
                                                                             Tools::Math::Vector3^% hitNormal)
 {
-	const auto path = new dtPolyRef[(unsigned)(maxPolys << 2)];
+	const auto path = new dtPolyRef[maxPolys];
 
-	const pin_ptr<float> hitNormalPin = &hitNormal->X;
+	hitNormal = gcnew Tools::Math::Vector3(0, 0, 0);
+
+	const pin_ptr<float> pHitNormal = &hitNormal->X;
 	const pin_ptr<float> startPosPin = &startPos->X;
 	const pin_ptr<float> endPosPin = &endPos->X;
 
@@ -145,7 +183,7 @@ RecastManaged::Detour::Status^ RecastManaged::Detour::NavMeshQuery::Raycast(Poly
 	int length;
 
 	auto const status = this->_query->raycast(startRef->Id, startPosPin, endPosPin, filter->GetPointer(), &t2,
-	                                          hitNormalPin, path, &length, maxPolys);
+	                                          pHitNormal, path, &length, maxPolys);
 
 	t = t2;
 
@@ -153,7 +191,7 @@ RecastManaged::Detour::Status^ RecastManaged::Detour::NavMeshQuery::Raycast(Poly
 	if (length > 0)
 	{
 		const pin_ptr<PolygonReference^> polyRefPtr = &polyRefs[0];
-		memcpy(polyRefPtr, &path, length << 2);
+		memcpy(polyRefPtr, &path, length);
 	}
 
 	delete[] path;
