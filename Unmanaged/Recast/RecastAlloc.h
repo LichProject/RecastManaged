@@ -22,7 +22,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <D:\YaDiskSync\YandexDisk\My_Projects\GitHub\RecastManaged\Unmanaged\Recast\RecastAssert.h>
+#include "RecastAssert.h"
 
 /// Provides hint values to the memory allocator on how long the
 /// memory is expected to be used.
