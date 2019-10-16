@@ -14,6 +14,6 @@ RecastManaged::DetourTileCache::TileCacheParams::!TileCacheParams()
 
 RecastManaged::DetourTileCache::TileCacheParams::TileCacheParams()
 {
-	this->m_TileCacheParams = new dtTileCacheParams();
+	this->m_TileCacheParams = new dtTileCacheParams;
 	memset(this->m_TileCacheParams, 0, sizeof this->m_TileCacheParams);
 }

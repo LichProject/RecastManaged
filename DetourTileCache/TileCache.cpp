@@ -63,63 +63,55 @@ RecastManaged::DetourTileCache::TileCache::!TileCache()
 
 bool RecastManaged::DetourTileCache::TileCache::AddTile(Detour::NavMeshData^ data, unsigned% tileRef)
 {
-	unsigned result;
+	const pin_ptr<unsigned> pTileRef = &tileRef;
 
-	const unsigned status = this->m_TileCache->addTile(data->NavData, data->NavDataSize, DT_COMPRESSEDTILE_FREE_DATA,
-	                                                   &result);
-	//if ((status & DT_WRONG_MAGIC) != 0)
-	//{
-	//	data->OwnsData = false;
-	//}
-
-	if (dtStatusFailed(status))
+	const unsigned status = this->m_TileCache->addTile(data->NavData, data->NavDataSize, DT_COMPRESSEDTILE_FREE_DATA, pTileRef);
+	if ((status & DT_WRONG_MAGIC) != 0)
 	{
 		data->OwnsData = false;
-		
 		dtFree(data->NavData);
-		data->NavData = 0;
+		data->NavData = nullptr;
 	}
 
-	tileRef = result;
-	return true;
+	return dtStatusSucceed(status);
 }
 
 bool RecastManaged::DetourTileCache::TileCache::RemoveTile(unsigned tileRef)
 {
 	auto const status = this->m_TileCache->removeTile(tileRef, nullptr, nullptr);
-	return (status & DT_SUCCESS) != 0;
+	return dtStatusSucceed(status);
 }
 
 unsigned RecastManaged::DetourTileCache::TileCache::GetTileAt(int x, int y, int layer)
 {
 	const auto tile = this->m_TileCache->getTileAt(x, y, layer);
-	if (tile != nullptr)
+	if (tile)
 	{
 		return this->m_TileCache->getTileRef(tile);
 	}
 
-	return 0u;
+	return 0;
 }
 
 bool RecastManaged::DetourTileCache::TileCache::BuildTilesAt(int x, int y, Detour::NavMesh^ mesh)
 {
-	return (this->m_TileCache->buildNavMeshTilesAt(x, y, mesh->GetPointer()) & DT_SUCCESS) != 0;
+	return dtStatusSucceed(this->m_TileCache->buildNavMeshTilesAt(x, y, mesh->GetPointer()));
 }
 
 bool RecastManaged::DetourTileCache::TileCache::BuildTile(unsigned tile, Detour::NavMesh^ mesh)
 {
-	return (this->m_TileCache->buildNavMeshTile(tile, mesh->GetPointer()) & DT_SUCCESS) != 0;
+	return dtStatusSucceed(this->m_TileCache->buildNavMeshTile(tile, mesh->GetPointer()));
 }
 
 bool RecastManaged::DetourTileCache::TileCache::BuildTile(Detour::TileReference^ tile, Detour::NavMesh^ mesh)
 {
-	return (this->m_TileCache->buildNavMeshTile(tile->Id, mesh->GetPointer()) & DT_SUCCESS) != 0;
+	return dtStatusSucceed(this->m_TileCache->buildNavMeshTile(tile->Id, mesh->GetPointer()));
 }
 
 RecastManaged::Detour::StatusDetailFlag RecastManaged::DetourTileCache::TileCache::AddTempBoxObstacle(
 	Tools::Math::Vector3^ bmin, Tools::Math::Vector3^ bmax, unsigned% obstacleRef)
 {
-	if (this->m_TileCache == nullptr)
+	if (!this->m_TileCache)
 	{
 		return Detour::StatusDetailFlag::Failure;
 	}
@@ -127,33 +119,28 @@ RecastManaged::Detour::StatusDetailFlag RecastManaged::DetourTileCache::TileCach
 	bmin->Y = -50;
 	bmax->Y = 50;
 
-	pin_ptr<float> pinBMin = &bmin->X;
-	pin_ptr<float> pinBMax = &bmax->X;
+	const pin_ptr<float> pBMin = &bmin->X;
+	const pin_ptr<float> pBMax = &bmax->X;
+	const pin_ptr<unsigned> pObstacleRef = &obstacleRef;
 
-	unsigned result;
-
-	const auto status = this->m_TileCache->addBoxObstacle(pinBMin, pinBMax, &result);
-	obstacleRef = result;
-
+	const auto status = this->m_TileCache->addBoxObstacle(pBMin, pBMax, pObstacleRef);
 	return Detour::StatusDetailFlag(status);
 }
 
 RecastManaged::Detour::StatusDetailFlag RecastManaged::DetourTileCache::TileCache::AddTempObstacle(
 	Tools::Math::Vector3^ pos, float radius, unsigned% obstacleRef)
 {
-	if (this->m_TileCache == nullptr)
+	if (!this->m_TileCache)
 	{
 		return Detour::StatusDetailFlag::Failure;
 	}
 
 	pos->Y = -500;
 
-	pin_ptr<float> pinPos = &pos->X;
-	unsigned result;
+	const pin_ptr<float> pinPos = &pos->X;
+	const pin_ptr<unsigned> pObstacleRef = &obstacleRef;
 
-	auto const status = this->m_TileCache->addObstacle(pinPos, radius, 1000, &result);
-	obstacleRef = result;
-
+	auto const status = this->m_TileCache->addObstacle(pinPos, radius, 1000, pObstacleRef);
 	return Detour::StatusDetailFlag(status);
 }
 
@@ -161,7 +148,7 @@ void RecastManaged::DetourTileCache::TileCache::RemoveTempObstacle(Tools::Math::
 {
 	pos->Y = -500;
 
-	pin_ptr<float> pinPos = &pos->X;
+	const pin_ptr<float> pinPos = &pos->X;
 
 	for (int i = 0; i < this->m_Parameters->MaxObstacles; ++i)
 	{
@@ -176,17 +163,17 @@ void RecastManaged::DetourTileCache::TileCache::RemoveTempObstacle(Tools::Math::
 
 bool RecastManaged::DetourTileCache::TileCache::RemoveTempObstacle(unsigned obstacleRef)
 {
-	if (this->m_TileCache == nullptr)
+	if (!this->m_TileCache)
 	{
 		return false;
 	}
 
-	return (this->m_TileCache->removeObstacle(obstacleRef) & DT_SUCCESS) != 0;
+	return dtStatusSucceed(this->m_TileCache->removeObstacle(obstacleRef) & DT_SUCCESS);
 }
 
 void RecastManaged::DetourTileCache::TileCache::ClearAllTempObstacles()
 {
-	if (this->m_TileCache == nullptr)
+	if (!this->m_TileCache)
 	{
 		return;
 	}
@@ -204,11 +191,9 @@ void RecastManaged::DetourTileCache::TileCache::ClearAllTempObstacles()
 RecastManaged::Detour::StatusDetailFlag RecastManaged::DetourTileCache::TileCache::Update(Detour::NavMesh^ mesh,
                                                                                           bool% upToDate)
 {
-	bool result;
-
-	const auto status = this->m_TileCache->update(0, mesh->GetPointer(), &result);
-	upToDate = result;
-
+	const pin_ptr<bool> pUpToDate = &upToDate;
+	
+	const auto status = this->m_TileCache->update(0, mesh->GetPointer(), pUpToDate); // TODO new
 	return Detour::StatusDetailFlag(status);
 }
 

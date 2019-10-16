@@ -4,8 +4,6 @@
 RecastManaged::Detour::NavMeshData::NavMeshData(array<unsigned char>^ navData, int startIndex, int length)
 {
 	this->NavDataSize = length;
-	/*this->NavData = (unsigned char*)dtAlloc(sizeof(unsigned char) * length, DT_ALLOC_PERM);
-	memset(this->NavData, 0, length);*/
 	this->NavData = (unsigned char*)dtAlloc(length, DT_ALLOC_PERM);
 	System::Runtime::InteropServices::Marshal::Copy(navData, startIndex, System::IntPtr(this->NavData), length);
 	this->_disposed = false;
@@ -27,10 +25,10 @@ RecastManaged::Detour::NavMeshData::~NavMeshData()
 
 RecastManaged::Detour::NavMeshData::!NavMeshData()
 {
-	//if (!this->_disposed)
+	//if (!this->_disposed) // TODO old (new uncomment)
 	//{
 	//	unsigned char* navData = NavData;
-	//	if (navData != nullptr && this->OwnsData)
+	//	if (navData && this->OwnsData)
 	//	{
 	//		dtFree(navData);
 	//		NavData = nullptr;

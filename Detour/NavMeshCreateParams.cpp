@@ -11,18 +11,18 @@ RecastManaged::Detour::NavMeshCreateParams::NavMeshCreateParams(dtNavMeshCreateP
 
 RecastManaged::Detour::NavMeshCreateParams::NavMeshCreateParams(bool* destructWithMe)
 {
-	void* voidPtr = new dtNavMeshCreateParams();
-	this->_params = static_cast<dtNavMeshCreateParams*>(voidPtr);
-	memset(&voidPtr, 0, sizeof voidPtr);
+	this->_params = new dtNavMeshCreateParams;
+	memset(this->_params, 0, sizeof this->_params);
+	
 	this->_destructWithMe = destructWithMe;
 	this->_disposed = false;
 }
 
 RecastManaged::Detour::NavMeshCreateParams::NavMeshCreateParams()
 {
-	void* voidPtr = new dtNavMeshCreateParams();
-	this->_params = static_cast<dtNavMeshCreateParams*>(voidPtr);
-	memset(&voidPtr, 0, sizeof voidPtr);
+	this->_params = new dtNavMeshCreateParams;
+	memset(this->_params, 0, sizeof this->_params);
+	
 	this->_destructWithMe = true;
 	this->_disposed = false;
 }

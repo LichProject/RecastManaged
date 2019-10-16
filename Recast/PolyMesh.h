@@ -23,16 +23,16 @@ namespace RecastManaged
 
 			rcPolyMesh* GetPointer();
 
-			virtual property RecastManaged::Tools::Math::Vector3^ BMax
+			virtual property Tools::Math::Vector3^ BMax
 			{
-				RecastManaged::Tools::Math::Vector3^ get();
-				void set(RecastManaged::Tools::Math::Vector3^ value);
+				Tools::Math::Vector3^ get();
+				void set(Tools::Math::Vector3^ value);
 			}
 
-			virtual property RecastManaged::Tools::Math::Vector3^ BMin
+			virtual property Tools::Math::Vector3^ BMin
 			{
-				RecastManaged::Tools::Math::Vector3^ get();
-				void set(RecastManaged::Tools::Math::Vector3^ value);
+				Tools::Math::Vector3^ get();
+				void set(Tools::Math::Vector3^ value);
 			}
 
 			virtual property float CellHeight

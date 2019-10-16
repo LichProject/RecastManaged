@@ -40,9 +40,9 @@ RecastManaged::Detour::Status^ RecastManaged::Detour::NavMeshQuery::FindNearestP
 	nearestPt = gcnew Tools::Math::Vector3(0, 0, 0);
 	unsigned id;
 
-	pin_ptr<float> pinCenter = &center->X;
-	pin_ptr<float> pinExtents = &extents->X;
-	pin_ptr<float> pinNearestPt = &nearestPt->X;
+	const pin_ptr<float> pinCenter = &center->X;
+	const pin_ptr<float> pinExtents = &extents->X;
+	const pin_ptr<float> pinNearestPt = &nearestPt->X;
 
 	const unsigned status = this->_query->findNearestPoly(pinCenter, pinExtents, filter->GetPointer(), &id,
 	                                                      pinNearestPt);
@@ -60,12 +60,12 @@ RecastManaged::Detour::Status^ RecastManaged::Detour::NavMeshQuery::FindPath(Pol
                                                                              int maxPathSize,
                                                                              array<PolygonReference^>^% result)
 {
-	unsigned* pathStartToEnd = new unsigned[maxPathSize > 0x3FFFFFFF ? -1 : maxPathSize << 2];
+	unsigned* pathStartToEnd = new unsigned[maxPathSize * 2];
 
 	int pathCount;
 
-	pin_ptr<float> pinStartPos = &startPos->X;
-	pin_ptr<float> pinEndPos = &endPos->X;
+	const pin_ptr<float> pinStartPos = &startPos->X;
+	const pin_ptr<float> pinEndPos = &endPos->X;
 
 	auto const status = this->_query->findPath(startRef->Id, endRef->Id, pinStartPos,
 	                                           pinEndPos, filter->GetPointer(),
@@ -79,7 +79,7 @@ RecastManaged::Detour::Status^ RecastManaged::Detour::NavMeshQuery::FindPath(Pol
 		result[i] = gcnew PolygonReference(i[pathStartToEnd]);
 	}
 
-	pathStartToEnd = nullptr;
+	delete[] pathStartToEnd;
 
 	return gcnew Status(status);
 }
@@ -90,12 +90,12 @@ RecastManaged::Detour::Status^ RecastManaged::Detour::NavMeshQuery::QueryPolygon
                                                                                   QueryFilter^ filter, int maxPolys,
                                                                                   array<PolygonReference^>^% result)
 {
-	unsigned* polys = new unsigned[maxPolys > 0x3FFFFFFF ? -1 : maxPolys * 2];
+	unsigned* polys = new unsigned[maxPolys * 2];
 
 	int maxPolysCount;
 
-	pin_ptr<float> pinCenter = &center->X;
-	pin_ptr<float> pinExtents = &extents->X;
+	const pin_ptr<float> pinCenter = &center->X;
+	const pin_ptr<float> pinExtents = &extents->X;
 
 	auto const status = this->_query->queryPolygons(pinCenter, pinExtents,
 	                                                filter->GetPointer(), polys, &maxPolysCount,
@@ -108,7 +108,7 @@ RecastManaged::Detour::Status^ RecastManaged::Detour::NavMeshQuery::QueryPolygon
 		result[i] = gcnew PolygonReference(i[polys]);
 	}
 
-	polys = nullptr;
+	delete[] polys;
 
 	return gcnew Status(status);
 }
@@ -141,7 +141,7 @@ RecastManaged::Detour::Status^ RecastManaged::Detour::NavMeshQuery::FindStraight
 
 	int sPathCount;
 
-	auto status = this->_query->findStraightPath(pStartPos, pEndPos, uPath, pathLength, sPath, sPathFlags, sPathRefs,
+	const auto status = this->_query->findStraightPath(pStartPos, pEndPos, uPath, pathLength, sPath, sPathFlags, sPathRefs,
 	                                             &sPathCount, maxStraightPathSize, 0);
 
 	points = gcnew array<Tools::Math::Vector3^>(sPathCount);
@@ -171,21 +171,19 @@ RecastManaged::Detour::Status^ RecastManaged::Detour::NavMeshQuery::Raycast(Poly
                                                                             float% t,
                                                                             Tools::Math::Vector3^% hitNormal)
 {
-	const auto path = new dtPolyRef[maxPolys];
+	const auto path = new dtPolyRef[maxPolys * 2];
 
 	hitNormal = gcnew Tools::Math::Vector3(0, 0, 0);
 
 	const pin_ptr<float> pHitNormal = &hitNormal->X;
 	const pin_ptr<float> startPosPin = &startPos->X;
 	const pin_ptr<float> endPosPin = &endPos->X;
-
-	float t2;
+	const pin_ptr<float> pT = &t;
+	
 	int length;
 
-	auto const status = this->_query->raycast(startRef->Id, startPosPin, endPosPin, filter->GetPointer(), &t2,
+	auto const status = this->_query->raycast(startRef->Id, startPosPin, endPosPin, filter->GetPointer(), pT,
 	                                          pHitNormal, path, &length, maxPolys);
-
-	t = t2;
 
 	auto const polyRefs = result = gcnew array<PolygonReference^>(length);
 	if (length > 0)
@@ -206,14 +204,36 @@ RecastManaged::Detour::Status^ RecastManaged::Detour::NavMeshQuery::FindDistance
                                                                                        Tools::Math::Vector3^% hitPos,
                                                                                        Tools::Math::Vector3^% hitNormal)
 {
-	return gcnew Status(0);
+	hitPos = gcnew Tools::Math::Vector3(0, 0, 0);
+	hitNormal = gcnew Tools::Math::Vector3(0, 0, 0);
+	
+	const pin_ptr<float> pCenterPos = &centerPos->X;
+	const pin_ptr<float> pHitPos = &hitPos->X;
+	const pin_ptr<float> pHitNormal = &hitNormal->X;
+	const pin_ptr<float> pResult = &result;
+	
+	auto const status = this->_query->findDistanceToWall(centerRef->Id, pCenterPos, maxRadius, filter->GetPointer(), pResult, pHitPos, pHitNormal);
+	return gcnew Status(status);
+}
+
+static float frand()
+{
+	return (float)rand() / (float)RAND_MAX;
 }
 
 RecastManaged::Detour::Status^ RecastManaged::Detour::NavMeshQuery::FindRandomPointAroundCircle(
 	PolygonReference^ startRef, Tools::Math::Vector3^ centerPos, float maxRadius, QueryFilter^ filter,
 	PolygonReference^% randomRef, Tools::Math::Vector3^% randomPoint)
 {
-	return gcnew Status(0);
+	const pin_ptr<float> pCenterPos = &centerPos->X;
+	const pin_ptr<float> pRandomPt = &randomPoint->X;
+	
+	unsigned id;
+	auto const status = this->_query->findRandomPointAroundCircle(startRef->Id, pCenterPos, maxRadius, filter->GetPointer(), frand, &id, pRandomPt);
+	
+	randomRef = gcnew PolygonReference(id);
+
+	return gcnew Status(id);
 }
 
 void RecastManaged::Detour::NavMeshQuery::SetTileLoaderFunction(LoadTileDelegate^ del)
